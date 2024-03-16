@@ -8,18 +8,24 @@ const includedFeatures = [
 ];
 
 const onRequest = async () => {
-  const response = await fetch("http://localhost:4000/create-order", {
-    method: "POST",
-  });
+  const response = await fetch(
+    "https://paymentgateway.zeabur.app/create-order",
+    {
+      method: "POST",
+    }
+  );
   const data = await response.json();
   console.log(data);
   window.location.href = data.links[1].href;
 };
 
 const onMpRequest = async () => {
-  const response = await fetch("http://localhost:4000/mp/create-order", {
-    method: "POST",
-  });
+  const response = await fetch(
+    "https://paymentgateway.zeabur.app/mp/create-order",
+    {
+      method: "POST",
+    }
+  );
   const data = await response.json();
   window.location.href = data;
 };
