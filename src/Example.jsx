@@ -116,7 +116,7 @@ export default function Example() {
                     {loading.paypal ? (
                       <ClipLoader size={18} />
                     ) : (
-                      <p style={{ fontSize: "16px" }}>Paypal</p>
+                      <p style={{ fontSize: "17px" }}>Paypal</p>
                     )}
                   </button>
 
@@ -127,7 +127,7 @@ export default function Example() {
                     {loading.mercadopago ? (
                       <ClipLoader size={18} />
                     ) : (
-                      <p style={{ fontSize: "16px" }}>Mercado Pago</p>
+                      <p style={{ fontSize: "17px" }}>Mercado Pago</p>
                     )}
                   </button>
                 </div>
