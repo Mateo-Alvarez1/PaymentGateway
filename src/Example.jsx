@@ -1,4 +1,6 @@
 import { CheckIcon } from "@heroicons/react/20/solid";
+import { useState } from "react";
+import { ClipLoader } from "react-spinners";
 
 const includedFeatures = [
   "Private forum access",
@@ -7,30 +9,42 @@ const includedFeatures = [
   "Official member t-shirt",
 ];
 
-const onRequest = async () => {
-  const response = await fetch(
-    "https://paymentgateway.zeabur.app/create-order",
-    {
-      method: "POST",
-    }
-  );
-  const data = await response.json();
-  console.log(data);
-  window.location.href = data.links[1].href;
-};
-
-const onMpRequest = async () => {
-  const response = await fetch(
-    "https://paymentgateway.zeabur.app/mp/create-order",
-    {
-      method: "POST",
-    }
-  );
-  const data = await response.json();
-  window.location.href = data;
-};
-
 export default function Example() {
+  const [loading, setLoading] = useState({
+    paypal: false,
+    mercadopago: false,
+  });
+
+  const onRequest = async (paymentMethod) => {
+    setLoading((prevState) => ({
+      ...prevState,
+      [paymentMethod]: !prevState[paymentMethod],
+    }));
+    const response = await fetch(
+      "https://paymentgateway.zeabur.app/create-order",
+      {
+        method: "POST",
+      }
+    );
+    const data = await response.json();
+    window.location.href = data.links[1].href;
+  };
+
+  const onMpRequest = async (paymentMethod) => {
+    setLoading((prevState) => ({
+      ...prevState,
+      [paymentMethod]: !prevState[paymentMethod],
+    }));
+    const response = await fetch(
+      "https://paymentgateway.zeabur.app/mp/create-order",
+      {
+        method: "POST",
+      }
+    );
+    const data = await response.json();
+    window.location.href = data;
+  };
+
   return (
     <div className="bg-gray-900 py-24 sm:py-42  min-h-lvh">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -88,17 +102,25 @@ export default function Example() {
                 </p>
                 <div className="flex mr-32 w-80 justify-between item-center">
                   <button
-                    onClick={onRequest}
+                    onClick={() => onRequest("paypal")}
                     className="mt-10 block w-full rounded-md bg-yellow-300 px-3 py-2 text-center text-sm font-semibold text-gray-900 shadow-sm hover:bg-yellow-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
-                    Paypal
+                    {loading.paypal ? (
+                      <ClipLoader size={18} />
+                    ) : (
+                      <p style={{ fontSize: "16px" }}>Paypal</p>
+                    )}
                   </button>
 
                   <button
-                    onClick={onMpRequest}
+                    onClick={() => onMpRequest("mercadopago")}
                     className="mt-10 ml-5 block w-full rounded-md bg-yellow-300 px-3 py-2 text-center text-sm font-semibold text-gray-900 shadow-sm hover:bg-yellow-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
-                    Mercado Pago
+                    {loading.mercadopago ? (
+                      <ClipLoader size={18} />
+                    ) : (
+                      <p style={{ fontSize: "16px" }}>Mercado Pago</p>
+                    )}
                   </button>
                 </div>
                 <p className="mt-6 text-xs leading-5 text-gray-600">
