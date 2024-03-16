@@ -18,7 +18,7 @@ export default function Example() {
   const onRequest = async (paymentMethod) => {
     setLoading((prevState) => ({
       ...prevState,
-      [paymentMethod]: !prevState[paymentMethod],
+      [paymentMethod]: true,
     }));
     const response = await fetch(
       "https://paymentgateway.zeabur.app/create-order",
@@ -28,12 +28,16 @@ export default function Example() {
     );
     const data = await response.json();
     window.location.href = data.links[1].href;
+    setLoading((prevState) => ({
+      ...prevState,
+      [paymentMethod]: false,
+    }));
   };
 
   const onMpRequest = async (paymentMethod) => {
     setLoading((prevState) => ({
       ...prevState,
-      [paymentMethod]: !prevState[paymentMethod],
+      [paymentMethod]: true,
     }));
     const response = await fetch(
       "https://paymentgateway.zeabur.app/mp/create-order",
@@ -43,6 +47,10 @@ export default function Example() {
     );
     const data = await response.json();
     window.location.href = data;
+    setLoading((prevState) => ({
+      ...prevState,
+      [paymentMethod]: false,
+    }));
   };
 
   return (
